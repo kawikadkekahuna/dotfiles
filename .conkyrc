@@ -1,0 +1,177 @@
+red = "#ff0000"
+blue = "#2E9AFE"
+
+conky.config = {
+	out_to_x = false,
+	own_window = false,
+	out_to_console = true,
+	background = false,
+	max_text_width = 0,
+
+-- Update interval in seconds
+	update_interval = 1,
+
+-- This is the number of times Conky will update before quitting.
+-- Set to zero to run forever.
+	total_run_times = 0,
+
+-- Shortens units to a single character (kiB->k, GiB->G, etc.). Default is off.
+	short_units = true,
+
+-- How strict should if_up be when testing an interface for being up?
+-- The value is one of up, link or address, to check for the interface
+-- being solely up, being up and having link or being up, having link
+-- and an assigned IP address.
+	if_up_strictness = 'address',
+
+-- Add spaces to keep things from moving about?  This only affects certain objects.
+-- use_spacer should have an argument of left, right, or none
+	use_spacer = 'left',
+
+-- Force UTF8? note that UTF8 support required XFT
+	override_utf8_locale = false,
+
+-- number of cpu samples to average
+-- set to 1 to disable averaging
+	cpu_avg_samples = 2,
+
+-- Stuff after 'TEXT' will be formatted on screen
+};
+
+conky.text = [[
+
+# JSON for i3bar
+
+ [
+    # Pacman
+    {
+      "full_text":" ",
+      "color": ${if_match ${execi 200 checkupdates | wc -l} > 0}"\#AEB404"${else}"\#2E9AFE"${endif},
+      "separator":false,
+      "separator_block_width":6
+    },\
+    {
+      "full_text":"[${execi 200 checkupdates | wc -l}]",
+      "color":"\#FFFFFF",
+      "separator_block_width":12
+    },\
+    # AUR
+    {
+      "full_text":" ",
+      "color":${if_match ${execi 1900 cower -u | wc -l} > 0}"\#AEB404"${else}"\#2E9AFE"${endif},
+      "separator":false,
+      "separator_block_width":6
+    },\
+    {
+      "full_text":"[${execi 1900 cower -u | wc -l}]",
+      "color":"\#FFFFFF",
+      "separator_block_width":12
+    },\
+    # Free Space
+    {
+      "full_text": " ",
+      "color" : "\#268BD2",
+      "separator": false,
+      "separator_block_width":6
+    },
+    {
+      "full_text": "${fs_free /home} / ${fs_size /home}",
+      "color" : "\#FFFFFF",
+      "separator_block_width":12
+    },
+    # Wifi
+    {
+      "full_text":" ",
+      "color":"\#00FF00",
+      "separator": false,
+      "separator_block_width":6
+    },
+    {
+      "full_text":"${upspeed wlp2s0}",
+      "color":"\#FFFFFF",
+      "separator_block_width":12
+    },
+    {
+      "full_text":" ",
+      "color":"\#00FF00",
+      "separator": false,
+      "separator_block_width":6
+    },
+    {
+      "full_text":"${downspeed wlp2s0}",
+      "color":"\#FFFFFF",
+      "separator_block_width":12
+    },
+    # RAM Usage
+    {
+      "full_text":" ",
+      "color":${if_match ${memperc}<90}"\#00FF00"${else}"\#ff0000"${endif},
+      "separator":false,
+      "separator_block_width":6
+    },
+    {
+      "full_text": "${memperc}%",
+      "color": ${if_match ${memperc}<90}"\#FFFFFF"${else}"\#ff0000"${endif},
+      "separator_block_width":12
+    },
+    # Battery
+    {
+      "full_text":" ",
+      "color" : ${if_match ${battery_percent BAT0}<25}"\#ff0000"${else}${if_match ${battery_percent BAT0}<75}"\#F7FE2E"${else}"\#00ff00"${endif}${endif},
+      "separator":false
+    },
+    {
+      "full_text":"[${battery_percent BAT0}%]",
+      "color":"\#FFFFFF",
+      "separator_block_width":12
+    },\
+    #Brightness
+    {
+      "full_text":" ",
+      "color":"\#2E9AFE",
+      "separator":false,
+      "separator_block_width":6
+    },\
+    {
+      "full_text":"[${exec xbacklight| awk '{printf("%d\n",$1 + 0.5)}'}%]",
+      "color":"\#FFFFFF",
+      "separator_block_width":12
+    },\
+    # Sound
+    {
+      "full_text":" ",
+      "color":"\#268BD2",
+      "separator":false,
+      "separator_block_width":6
+    },
+    {
+      "full_text":"${exec amixer | grep Front\ Left:\ Playback | cut -d " " -f7} ",
+      "color":"\#FFFFFF",
+      "separator_block_width":12
+    },
+    # Date
+    {
+      "full_text":" ",
+      "color":"\#2E9AFE",
+      "separator":false,
+      "separator_block_width":6
+    },
+    {
+      "full_text":"${time %a %b %d}",
+      "color":"\#FFFFFF",
+      "separator_block_width":12
+    },
+    # Time
+    {
+      "full_text":" ",
+      "color":"\#2E9AFE",
+      "separator":false,
+      "separator_block_width":6
+    },
+    {
+      "full_text":"${time %H:%M:%S}",
+      "color":"\#FFFFFF",
+      "separator_block_width":12
+    }
+  ],
+]];
