@@ -43,6 +43,13 @@ conky.text = [[
 # JSON for i3bar
 
  [
+    # Keyboard Status
+    {
+      "full_text":" ",
+      "color": ${if_match ${exec $HOME/.scripts/keyboard-status.sh} > 0}"\#00FF00"${else}"\#FF0000"${endif},
+      "separator":false,
+      "separator_block_width":6
+    },\
     # Pacman
     {
       "full_text":" ",
